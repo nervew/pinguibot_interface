@@ -1,0 +1,22 @@
+---
+globs: src/views/**/*.vue
+description: CRUD generation patterns for admin modules
+---
+## CRUD Generation
+
+- Directory layout per module:
+  - Views in `src/views/<module>/` e.g., `list.vue`, `create.vue`, `edit.vue` and `components/Form.vue`.
+  - API in `src/api/<module>.js` using the Axios wrapper.
+- List page requirements:
+  - Search bar using `<el-form inline>`; reset sets `page=1`.
+  - Table using `<el-table :data="rows" v-loading="loading" border fit>`.
+  - Actions column with edit/delete buttons; protect with `v-permission` where needed.
+  - Pagination via `src/components/Pagination` with `v-model:page` and `v-model:limit` and `@pagination="getList"`.
+- Dialog or sub-view for create/edit:
+  - Prefer reusable `<Form>` component embedded in `<el-dialog>` for quick workflows.
+  - Use `<el-form :model="form" :rules="rules" ref="formRef">` and validate on submit.
+- Element Plus validation:
+  - Use `{ required: true, message: 'Requerido', trigger: 'blur'|'change' }` per field.
+- Minimal API interface:
+  - `fetchList(params)`, `fetchOne(id)`, `create(data)`, `update(id, data)`, `remove(id)` returning `{ code, data }` as in [src/utils/request.js](mdc:src/utils/request.js).
+- Example usage exists in [src/views/example/list.vue](mdc:src/views/example/list.vue) and [src/components/Pagination](mdc:src/components/Pagination/index.vue).

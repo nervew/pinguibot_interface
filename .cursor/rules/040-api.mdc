@@ -1,0 +1,30 @@
+---
+globs: src/api/**/*.js,src/views/**/*.vue
+description: API request patterns using Axios wrapper and response schema
+---
+## API Requests
+
+- Use the Axios instance at [src/utils/request.js](mdc:src/utils/request.js). It sets `baseURL` from `VITE_BASE_API`, injects `X-Token`, and expects responses shaped like `{ code: 20000, data, message }`.
+- Create one file per module under `src/api/<module>.js` and export functions:
+
+```js
+import request from '@/utils/request';
+
+export function fetchList(params) {
+  return request({ url: '/<module>', method: 'get', params });
+}
+export function fetchOne(id) {
+  return request({ url: `/\u003Cmodule\u003E/${id}`, method: 'get' });
+}
+export function create(data) {
+  return request({ url: '/<module>', method: 'post', data });
+}
+export function update(id, data) {
+  return request({ url: `/\u003Cmodule\u003E/${id}`, method: 'put', data });
+}
+export function remove(id) {
+  return request({ url: `/\u003Cmodule\u003E/${id}`, method: 'delete' });
+}
+```
+
+- Do not bypass the wrapper; leverage interceptors for error handling and token refresh prompts.

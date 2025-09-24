@@ -1,0 +1,13 @@
+---
+globs: src/**/*.vue,src/**/*.ts
+description: Vue SFC patterns, Element Plus usage, icons, styles
+---
+## Vue Components & Element Plus
+
+- Use `<script setup lang="ts">` for new SFCs. Use Composition API (`ref`, `reactive`, `computed`, `watch`, `onMounted`).
+- Element Plus components are auto-imported; do not import them manually. Icons can be imported from `@element-plus/icons-vue` and used via `:icon="Icon"`. If you store an icon in reactive state, wrap with `markRaw`.
+- Use `src/components/Pagination` for lists requiring pagination. Example usage in [src/views/example/list.vue](mdc:src/views/example/list.vue).
+- Reusable components should live in `src/components/Name/index.vue` (or `Name.vue`) and expose clear props/events using `defineProps`/`defineEmits`.
+- Module-scoped components belong under `src/views/<module>/components/`.
+- Use `<svg-icon icon-class="name" />` for custom icons placed under `src/icons/svg`.
+- Styles: prefer `<style scoped>`. Reuse variables/mixins from `src/styles/*`. Avoid adding new global CSS frameworks.

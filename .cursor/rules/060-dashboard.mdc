@@ -1,0 +1,19 @@
+---
+globs: src/views/**/*.vue
+description: Dashboard panels layout with Element Plus and existing charts
+---
+## Dashboards & Panels
+
+- Use grid layout with Element Plus:
+```vue
+<el-row :gutter="16">
+  <el-col :span="6"><el-card><el-statistic title="Usuarios" :value="users" /></el-card></el-col>
+  <el-col :span="6"><el-card><el-statistic title="Pedidos" :value="orders" /></el-card></el-col>
+  <el-col :span="6"><el-card><el-statistic title="Ingresos" :value="revenue" /></el-card></el-col>
+  <el-col :span="6"><el-card><el-statistic title="Errores" :value="errors" /></el-card></el-col>
+  <!-- Rows for charts/tables below -->
+</el-row>
+```
+- Organize complex dashboards into subcomponents under `src/views/<module>/components/Panel*.vue` for each panel.
+- Reuse available chart components from `src/components/Charts/*` where applicable or integrate lazily loaded chart libs.
+- Keep panels self-contained: fetch their own data, expose props for filters if needed, and avoid global state unless necessary.

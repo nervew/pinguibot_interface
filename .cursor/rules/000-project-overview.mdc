@@ -1,0 +1,15 @@
+---
+alwaysApply: true
+---
+## Vue3 Element Admin Context
+
+- Main entry: [src/main.ts](mdc:src/main.ts) mounts router, Pinia via [src/store/index.ts](mdc:src/store/index.ts), registers `svg-icon` and permission directive, and loads route guards from [src/permission.ts](mdc:src/permission.ts).
+- Router: [src/router/index.ts](mdc:src/router/index.ts) defines `constantRoutes` and `asyncRoutes`. New feature modules live under [src/router/modules](mdc:src/router/modules/) with lazy-loaded components. Use `meta: { title, icon, roles, hidden, alwaysShow, noCache, affix, activeMenu }`.
+- Layout: [src/layout/index.vue](mdc:src/layout/index.vue) wraps `Navbar`, `Sidebar`, `TagsView`, and `AppMain`.
+- Store: Pinia modules autoloaded from [src/store/modules/*.ts](mdc:src/store/modules/). `user.ts` handles token/roles; `permission.ts` filters routes by `meta.roles` and exposes `generateRoutes`.
+- HTTP: Axios wrapper at [src/utils/request.js](mdc:src/utils/request.js) uses `VITE_BASE_API` and expects `{ code: 20000, data, message }`.
+- Vite: [vite.config.ts](mdc:vite.config.ts) sets alias `@` to `/src`, auto-imports Element Plus, configures SVG sprite loader for [src/icons/svg](mdc:src/icons/svg/), and mock server via [mock/*](mdc:mock/).
+
+Guidance
+- Prefer `<script setup lang="ts">` for new components; keep consistent with existing Element Plus usage and auto-import.
+- Place reusable components in [src/components](mdc:src/components/) and module-specific views in [src/views/<module>](mdc:src/views/).

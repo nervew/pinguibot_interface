@@ -1,0 +1,36 @@
+---
+globs: src/router/**/*.ts
+description: Routing conventions, async routes, meta fields, lazy loading
+---
+## Routing Conventions
+
+- Define new module route files under [src/router/modules](mdc:src/router/modules/) and export a `RouteRecordRaw` (or default route object).
+- Lazy load views using `() => import('@/views/<module>/<view>.vue')`.
+- Add the module route to `asyncRoutes` in [src/router/index.ts](mdc:src/router/index.ts) so it participates in role-based filtering and dynamic `addRoute`.
+- Use `meta` to drive sidebar/menu and permissions:
+  - `title`: display name
+  - `icon`: ElementPlus icon name or custom svg name
+  - `roles`: array of roles allowed to access the route
+  - Optional: `hidden`, `alwaysShow`, `noCache`, `affix`, `activeMenu`
+- The app uses `createWebHashHistory`. Base path uses `import.meta.env.BASE_URL`.
+- Example scaffold for a module route:
+
+```ts
+import type { RouteRecordRaw } from 'vue-router';
+const Layout = () => import('@/layout/index.vue');
+
+const usersRouter: RouteRecordRaw = {
+  path: '/users',
+  component: Layout,
+  redirect: '/users/list',
+  name: 'Users',
+  meta: { title: 'Usuarios', icon: 'people', roles: ['admin', 'editor'] },
+  children: [
+    { path: 'list', component: () => import('@/views/users/list.vue'), name: 'UserList', meta: { title: 'Listado', icon: 'list' } },
+    { path: 'create', component: () => import('@/views/users/create.vue'), name: 'UserCreate', meta: { title: 'Crear', roles: ['admin'] } },
+    { path: 'edit/:id(\\d+)', component: () => import('@/views/users/edit.vue'), name: 'UserEdit', meta: { hidden: true, title: 'Editar', activeMenu: '/users/list', roles: ['admin'] } }
+  ]
+};
+
+export default usersRouter;
+```

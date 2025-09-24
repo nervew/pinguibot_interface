@@ -1,0 +1,17 @@
+---
+globs: src/**/*.vue,src/router/**/*.ts
+description: Permissions via route meta.roles and v-permission directive
+---
+## Permissions & Roles
+
+- Route-level access control:
+  - Specify `meta.roles: string[]` on routes to restrict access.
+  - The guard in [src/permission.ts](mdc:src/permission.ts) loads roles via `userStore().getInfo()` and dynamically adds allowed routes from `asyncRoutes` using `permissionStore().generateRoutes(roles)`.
+- Component-level control:
+  - Use `v-permission="['admin','editor']"` (registered in [src/main.ts](mdc:src/main.ts)) to hide buttons/actions based on current roles.
+  - The directive is implemented at [src/directive/permission/permission.ts](mdc:src/directive/permission/permission.ts) and removes the element if the user lacks roles.
+- Patterns:
+```vue
+<el-button v-permission="['admin']" type="primary">Crear</el-button>
+```
+- Do not hardcode roles in code paths; always read from `userStore().roles` and rely on the existing guard/interceptors.
